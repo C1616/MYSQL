@@ -1,0 +1,24 @@
+
+//On Windows use the script below and Sichedule it via windows task Sicheduler
+mysqldump.exe --user=root --password=root  --host=localhost --port=3306 --result-file="c:\www\db\backup.%date:~10,4%%date:~7,2%%date:~4,2%.sql" --default-character-set=utf8 --single-transaction=TRUE --databases "dbtest1" "dbtest2"
+
+mysqldump.exe --user=YourUserName --password=YourPassword --host=localhost --port=3306 --result-file="Path\dump.sql" --databases "DatabaseName1" "Database2"
+
+//On Linux -make it excutable chmod 700 MySqlBackup.sh and then use cron tab crontab -e
+//00 02 * * * /path/to/MySqlBackup.sh so it can outomatically run in this case it will run everyday at 2am
+
+#!/bin/bash
+
+USER="your_user"
+PASSWORD="your_password"
+OUTPUT="/path/to/backup/dir"
+
+databases=`mysql --user=$USER --password=$PASSWORD -e "SHOW DATABASES;" | tr -d "| " | grep -v Database`
+
+for db in $databases; do
+    if [[ "$db" != "information_schema" ]] ; then
+        echo "Dumping database: $db"
+        mysqldump --force --opt --user=$USER --password=$PASSWORD --databases $db > $OUTPUT/`date +%Y%m%d`.$db.sql
+        gzip $OUTPUT/`date +%Y%m%d`.$db.sql
+    fi
+done
