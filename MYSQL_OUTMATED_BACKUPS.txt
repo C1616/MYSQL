@@ -4,6 +4,8 @@ mysqldump.exe --user=root --password=root  --host=localhost --port=3306 --result
 
 mysqldump.exe --user=YourUserName --password=YourPassword --host=localhost --port=3306 --result-file="Path\dump.sql" --databases "DatabaseName1" "Database2"
 
+
+
 //On Linux -make it excutable chmod 700 MySqlBackup.sh and then use cron tab crontab -e
 //00 02 * * * /path/to/MySqlBackup.sh so it can outomatically run in this case it will run everyday at 2am
 
